@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load cart %}
+{% load custom_filter %}
+<div class="container my-3">
+    <h2>Search results : </h2>
+    {% if allProducts|length < 1 %}
+   <p>No search results</p>
+    Your search query : <b>{{query}}</b> did not match any documents. <br>
+    Suggestions:
+    <ul>
+        <li>Make sure that all words are spelled correctly.</li>
+        <li>Try more general keywords.</li>
+        <li> Try fewer keywords.</li>
+        <li> Try different keywords.</li>
+    </ul>
+    {% endif %}
+    {% comment %} {% for product in allProducts  %} {% endcomment %}
+        <div class="col-md-12">
+            <!--Images-->
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <div class="card-columns">
+                    {% for product in allProducts  %}
+                    <div class="card">
+                        <img src="{{product.image.url}}" class="card-img-top" alt="Card Image Cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.name}}</h5>
+                            <p class="card-text">{{product.description}}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        {% comment %} <div class="card mx-auto mb-3" id={{product.id}} style="width: 18rem;">
+			<img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
+			<div class="card-body">
+				<p class="card-title">{{product.name}}</p>
+				<p class="card-text"><b>{{product.price|currency}}</b></p>
+			</div>
+			<div class="card-footer p-0 no-gutters">
+				{% if product|is_in_cart:request.session.cart %}
+				<div class="row no-gutters">
+					<form action="/#{{product.id}}" class="col-2 " method="post">{% csrf_token %}
+					    <input hidden type="text" name='product' value='{{product.id}}'>
+					    <input hidden type="text" name='remove' value='True'>
+					    <input type="submit" value=" - " class="btn btn-block btn-light border-right">
+					</form>
+					<div class="text-center col">{{product|cart_quantity:request.session.cart}} in Cart</div>
+                        <form action="/#{{product.id}}" class="col-2 " method="post">{% csrf_token %}
+                            <input hidden type="text" name='product' value='{{product.id}}'>
+                            <input type="submit" value=" + " class="btn btn-block btn-light border-left">
+                        </form>
+					</div>
+				{% else %}
+					<form action="/#{{product.id}}" method="POST" class="btn-block">{% csrf_token %}
+						<input hidden type="text" name='product' value='{{product.id}}'>
+						<input type="submit" class="float-right btn btn-light  form-control" value="Add To Cart">
+					</form>
+				{% endif %}
+				</div>
+			</div> {% endcomment %}
+    {% comment %} {% endfor %} {% endcomment %}
+{% endblock %}
+    
